@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brute-Force Simulator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body {
+            text-align: center;
+            margin: 40px;
+            background: black;
+        }
+
+        h1 {
+            font-family: Georgia, sans-serif;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center; /* Aligns the logo and title vertically */
+            gap: 20px; /* Space between logo and title */
+        }
+        .logo-container {
+            margin-bottom: 0; /* Adjusted to prevent unwanted spacing */
+        }
+        .logo {
+            width: 100px; /* Adjust as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .text-section {
+            background-color: #222; /* Dark background for emphasis */
+            color: white; /* Light text for readability */
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .text-section h2 {
+            text-align: center;
+            font-family: Georgia, sans-serif;
+            margin-bottom: 15px;
+        }
+        .text-section-content {
+            text-align: left;
+            font-family: Georgia, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .text-section ul {
+            text-align: left;
+            font-size: 16px;
+            margin-left: 20px;
+        }
+        .text-section li {
+            text-align: left;
+            font-family: Georgia, sans-serif;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 300,
+                'GRAD' 0,
+                'opsz' 24;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            color: #aaa;
+        }
+        .material-symbols-outlined:hover {
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+            color: #fff;
+        }
+        .password-section {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            text-align: center;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        .password-section h2 {
+            font-family: 'Georgia', sans-serif;
+            color: white;
+            margin-bottom: 15px;
+        }
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            background: #444;
+            border-radius: 8px;
+            padding: 5px;
+            box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .password-container input {
+            flex: 1;
+            padding: 12px;
+            padding-right: 40px;
+            font-size: 16px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            border: none;
+            border-radius: 5px;
+            background: #555;
+            color: white;
+            text-align: center;
+            outline: none;
+        }
+        .password-container input::placeholder {
+            color: #bbb;
+            font-style: italic;
+        }
+        .visibility-toggle {
+            position: absolute;
+            right: 10px;
+            top: 40%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            color: #aaa;
+        }
+        .visibility-toggle:hover {
+            color: #fff;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .submit-btn, .cancel-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .submit-btn {
+            background: #28a745;
+            color: white;
+        }
+        .submit-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+        .cancel-btn {
+            background: #dc3545;
+            color: white;
+            display: none;
+        }
+        .cancel-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .attempts-container, .current-attempt-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px; /* Adds some spacing between text and number */
+            display: none;
+        }
+        .attempts-label, .current-attempt-label {
+            font-weight: bold;
+        }
+        .attempts-number, .current-attempt-number {
+            display: inline-block;
+            min-width: 100px; /* Adjust width to accommodate the number without shifting */
+            text-align: left;
+        }
+
+        .results {
+            margin-top: 10px;
+            color: white;
+            font-size: 10px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .strength-bar {
+            height: 10px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .strength-bar div {
+            height: 100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="logo.svg" alt="Custom Logo" class="logo">
+        </div>
+        <h1>Password Brute-Force Simulator // By: KapuuZapuu</h1>
+    </div>
+
+    <div class="text-section">
+        <h2>// Understanding Password Security //</h2>
+        <div class="text-section-content">
+            Hackers use brute force attacks to guess passwords by systematically trying every possible combination using an algorithm. The weaker a password, the faster it can be cracked. To demonstrate this, tests with different restrictive parameters have been created below. Each one becomes less limiting in terms of which characters (and eventually how many) you can use.
+        </div>
+        <div class="text-section-content">
+            This website aims to provde insight into the importance of creating strong passwords to keep online accounts robustly secure. The main ideas are:
+        </div>
+        <ul>
+            <li>Using a mix of uppercase, lowercase, numbers, and special characters.</li>
+            <li>Having a high character count (>12).</li>
+        </ul>
+        <div class="text-section-content">
+            Additionally, the following are also good ideas to keep in mind for maximum password security:
+        </div>
+        <ul>
+            <li>Avoidance of using common words or easily guessable information (like birthdays or names).</li>
+            <li>Using a password manager to generate and store highly complex passwords.</li>
+        </ul>
+        <div class="text-section-content">
+            Through this simulation, you'll see how long different passwords of varying characteristics take to crack using a brute-force attack.
+        </div>
+    </div>
+
+    <div class="text-section">
+        <h2>// Password Monotony //</h2>
+        <div class="text-section-content">
+            Using only one type of character when it comes to making your password means that the amount of password combinations a potential brute force attack needs to go through is highly limited. As far as the English alphabet goes, there are only 26 characters, meaning that a brute force attack that is configured to only crack passwords with lowercase characters will only have a maximum of 26^N possible combinations, where N is the length of the password.
+        </div>
+        <div class="text-section-content">
+            For example:
+        </div>
+        <ul>
+            <li>Any given 5-character lowercase password would have 26^5 = 11,881,376 possible combinations.</li>
+            <li>Any given 8-character lowercase password would have 26^8 = 208,827,064,576 possible combinations.</li>
+        </ul>
+        <div class="text-section-content">
+            While these may seem like large numbers, modern brute-force attack methods—especially those using GPU acceleration or botnets—can crack such passwords in seconds to minutes. While the following brute-force algorithms you will see here are nowhere near as capable, they still demonstrate the risk at a smaller scale.
+        </div>
+        <div class="text-section-content">
+            The brute force mechanism for Test 1 has the following functionality:
+        </div>
+        <ul>
+            <li>Will test for passwords of length 1-5.</li>
+            <li>Has a character set of: "abcdefghijklmnopqrstuvwxyz".</li>
+            <li>Starts from "a", and operates until reaching "zzzzz".</li>
+        </ul>
+        <div class="password-section">
+            <h2>Test 1: Lowercase Letters Only</h2>
+            <div class="password-container">
+                <input type="password" id="password1" placeholder="Enter your password">
+                <span class="material-symbols-outlined visibility-toggle" onclick="togglePassword('password1', this)">
+                    visibility
+                </span>
+            </div>
+            <div class="button-group">
+                <button id="submit-btn1" class="submit-btn" onclick="runBruteForceSimulation(1, 'abcdefghijklmnopqrstuvwxyz')">
+                    Submit
+                </button>
+                <button id="cancel1" class="cancel-btn" onclick="cancelBruteForce(1)">Cancel</button>
+            </div>
+            <div class="results">
+                <p id="results1"></p>
+                <p id="attempts-container1" class="attempts-container">
+                    <span class="attempts-label">Attempts:</span>
+                    <span id="attempts1" class="attempts-number">0</span>
+                </p>
+                <p id="current-attempt-container1" class="current-attempt-container">
+                    <span class="current-attempt-label">Current Attempt:</span>
+                    <span id="currentAttempt1" class="current-attempt-number">...</span>
+                </p>            
+            </div>
+        </div>
+    </div>    
+
+    <div class="text-section">
+        <h2>// Introducing Numbers //</h2>
+        <div class="text-section-content">
+            Diversity in terms of the number of characters a user has access to (and implements) is directly proportional to how hard their password is to crack. By adding numbers to our password, we have increased the maximum number of possible character combinations from 26^N to 36^N as we have now added the ability to include numbers 0-9 (10 more characters to account for). This significantly increases the amount of time a system would need in order to crack a password, now that it has to account for more character combinations. The increase in time taken is (on average) more than 400% if both passwords are 5 characters long and exist around the tail end of each of their respective algorithm's combination logic.
+        </div>
+        <div class="text-section-content">
+            You may notice that if you use the same password as you did for the previous step that the algorithm takes longer to crack that same password in this step. This is because the brute force algorithm has to account for the new possible characters even though the user may not have incorporated any of them. This is why password diversity is encouraged amongst users (often enforced at most sign up pages), forcing attackers to use the largest character set possible.
+        </div>
+        <div class="text-section-content">
+            The brute force mechanism for Test 2 has the following functionality:
+        </div>
+        <ul>
+            <li>Will test for passwords of length 1-5.</li>
+            <li>Has a character set of: "abcdefghijklmnopqrstuvwxyz0123456789".</li>
+            <li>Starts from "a", and operates until reaching "99999".</li>
+        </ul>
+        <div class="password-section">
+            <h2>Test 2: Lowercase Letters & Numbers</h2>
+            <div class="password-container">
+                <input type="password" id="password2" placeholder="Enter your password">
+                <span class="material-symbols-outlined visibility-toggle" onclick="togglePassword('password2', this)">
+                    visibility
+                </span>
+            </div>
+            <div class="button-group">
+                <button id="submit-btn2" class="submit-btn" onclick="runBruteForceSimulation(2, 'abcdefghijklmnopqrstuvwxyz0123456789')">
+                    Submit
+                </button>
+                <button id="cancel2" class="cancel-btn" onclick="cancelBruteForce(2)">Cancel</button>
+            </div>
+            <div class="results">
+                <p id="results2"></p>
+                <p id="attempts-container2" class="attempts-container">
+                    <span class="attempts-label">Attempts:</span>
+                    <span id="attempts2" class="attempts-number">0</span>
+                </p>
+                <p id="current-attempt-container2" class="current-attempt-container">
+                    <span class="current-attempt-label">Current Attempt:</span>
+                    <span id="currentAttempt2" class="current-attempt-number">...</span>
+                </p>            
+            </div>
+        </div>
+    </div>
+
+    <div class="text-section">
+        <h2>// Case Sensitivity //</h2>
+        <div class="text-section-content">
+            We've shown in the previous test how increasinging the character set dramatically slows down the brute-force process. Now, by adding case sensitivity to our passwords means that effectively, they gain 26 new potential characters, drastically increasing security. The number of maximum number of possible character combinations now increases from 36^N to 62^N, which is not only an expontential increase, but an expontential increase to an even greater degree than when we introduced numbers.
+        </div>
+        <div class="text-section-content">
+            Do note that choosing a password within the second half of the combination logic (starting with an uppercase alphabet after "E" or any number) will take a decently long time ~1-2 minutes.
+        </div>
+        <div class="text-section-content">
+            The brute force mechanism for Test 3 has the following functionality:
+        </div>
+        <ul>
+            <li>Will test for passwords of length 1-5.</li>
+            <li>Has a character set of: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".</li>
+            <li>Starts from "a", and operates until reaching "99999".</li>
+        </ul>
+        <div class="password-section">
+            <h2>Test 3: Uppercase, Lowercase Letters & Numbers</h2>
+            <div class="password-container">
+                <input type="password" id="password3" placeholder="Enter your password">
+                <span class="material-symbols-outlined visibility-toggle" onclick="togglePassword('password3', this)">
+                    visibility
+                </span>
+            </div>
+            <div class="button-group">
+                <button id="submit-btn3" class="submit-btn" onclick="runBruteForceSimulation(3, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')">
+                    Submit
+                </button>
+                <button id="cancel3" class="cancel-btn" onclick="cancelBruteForce(3)">Cancel</button>
+            </div>
+            <div class="results">
+                <p id="results3"></p>
+                <p id="attempts-container3" class="attempts-container">
+                    <span class="attempts-label">Attempts:</span>
+                    <span id="attempts3" class="attempts-number">0</span>
+                </p>
+                <p id="current-attempt-container3" class="current-attempt-container">
+                    <span class="current-attempt-label">Current Attempt:</span>
+                    <span id="currentAttempt3" class="current-attempt-number">...</span>
+                </p>            
+            </div>
+        </div>
+    </div>
+
+    <div class="password-section">
+        <h2>Step 4: All Characters (Special Symbols Included)</h2>
+        <div class="password-container">
+            <input type="password" id="password4" placeholder="Enter a password (1-5 any character)">
+            <span class="material-symbols-outlined visibility-toggle" onclick="togglePassword('password4', this)">visibility</span>
+        </div>
+        <button id="submit-btn4" onclick="runBruteForceSimulation(4, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=~')">Submit</button>
+        <button id="cancel4" class="cancel-btn" onclick="cancelBruteForce(4)">Cancel</button>
+        <p id="results4"></p>
+        <p id="attempts4"></p>
+        <p id="currentAttempt4"></p>
+    </div>
+
+    <div class="password-section">
+        <h2>Step 5: Extended Lowercase Letters Only</h2>
+        <div class="password-container">
+            <input type="password" id="password5" placeholder="Enter a password (1-8 lowercase letters)">
+            <span class="material-symbols-outlined visibility-toggle" onclick="togglePassword('password5', this)">visibility</span>
+        </div>
+        <button id="submit-btn5" onclick="runBruteForceSimulation(5, 'abcdefghijklmnopqrstuvwxyz')">Submit</button>
+        <button id="cancel5" class="cancel-btn" onclick="cancelBruteForce(5)">Cancel</button>
+        <p id="results5"></p>
+        <p id="attempts5"></p>
+        <p id="currentAttempt5"></p>
+    </div>
+
+    <div class="password-section">
+        <h2>Step 6: Test Out A Sample Password's Strength</h2>
+        <div class="password-container">
+            <input type="password" id="password6" placeholder="Test your password" oninput="checkStrength(this.value)">
+            <span class="material-symbols-outlined visibility-toggle" onclick="togglePassword('password6', this)">visibility</span>
+        </div>
+        <div class="strength-bar" id="strength-bar">
+            <div></div>
+        </div>
+        <p id="strength-indicator">Password Strength: </p>
+    </div>
+
+    <script>
+        let bruteForceRunning = {};
+
+        async function runBruteForceSimulation(step, characterSet) {
+            let passwordInput = document.getElementById(`password${step}`).value;
+            let resultsDiv = document.getElementById(`results${step}`);
+            let attemptsDiv = document.getElementById(`attempts${step}`);
+            let currentAttemptDiv = document.getElementById(`currentAttempt${step}`);
+            let submitBtn = document.getElementById(`submit-btn${step}`);
+            let cancelBtn = document.getElementById(`cancel${step}`);
+            let attemptsContainer = document.getElementById(`attempts-container${step}`);
+            let currentAttemptContainer = document.getElementById(`current-attempt-container${step}`);
+
+            let maxLength = (step === 5) ? 8 : 5; // Step 5 allows up to 8 characters
+            if (passwordInput.length < 1 || passwordInput.length > maxLength) {
+                resultsDiv.textContent = `Password must be between 1 and ${maxLength} characters.`;
+                return;
+            }
+
+            // **Validate if the password contains only allowed characters**
+            if (!isValidPassword(passwordInput, characterSet)) {
+                resultsDiv.textContent = "Error: Password contains invalid characters for this step.";
+                return;
+            }
+
+            resultsDiv.textContent = "Starting brute force simulation...";
+            attemptsDiv.textContent = "Attempts: 0";
+            currentAttemptDiv.textContent = "Current Attempt: ...";
+            submitBtn.style.display = "none";
+            cancelBtn.style.display = "inline-block";
+            bruteForceRunning[step] = true;
+
+            attemptsContainer.style.display = "flex";
+            currentAttemptContainer.style.display = "flex";
+
+            let startTime = performance.now();
+            let attempt = "";
+            let attemptsCount = 0;
+            let found = false;
+
+            // Try passwords of increasing length, starting from 1 up to the input length
+            for (let length = 1; length <= passwordInput.length; length++) {
+                const maxAttempts = Math.pow(characterSet.length, length);
+
+                for (let i = 0; i < maxAttempts; i++) {
+                    if (!bruteForceRunning[step]) return;
+
+                    attemptsCount++;
+                    attempt = generateAttempt(i, characterSet, length);
+
+                    if (attempt === passwordInput) {
+                        found = true;
+                        break;
+                    }
+
+                    if (attemptsCount % 100000 === 0) {
+                        attemptsDiv.textContent = attemptsCount.toLocaleString();
+                        currentAttemptDiv.textContent = attempt;
+                        await new Promise(resolve => setTimeout(resolve, 0));
+                    }
+                }
+
+                if (found) break; // Stop once the password is found
+            }
+
+            let endTime = performance.now();
+            let timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+            bruteForceRunning[step] = false;
+            cancelBtn.style.display = "none";
+            submitBtn.style.display = "inline-block";
+
+            attemptsContainer.style.display = "none";
+            currentAttemptContainer.style.display = "none";
+
+            attemptsDiv.textContent = ""; // Clear attempts display before showing the final result
+            currentAttemptDiv.textContent = ""; // Clear current attempt display
+
+            resultsDiv.innerHTML = found ?
+                `<p>Brute force simulation complete!</p>
+                 <p>Revealed Password: <strong>${attempt}</strong></p>
+                 <p>Time Taken: <strong>${timeTaken} seconds</strong></p>
+                 <p>Total Attempts: <strong>${attemptsCount.toLocaleString()}</strong></p>`
+                : "<p>Simulation failed.</p>";
+        }
+
+        function cancelBruteForce(step) {
+            bruteForceRunning[step] = false;
+            let submitBtn = document.getElementById(`submit-btn${step}`);
+            let cancelBtn = document.getElementById(`cancel${step}`);
+
+            submitBtn.style.display = "inline-block";
+            cancelBtn.style.display = "none";
+
+            document.getElementById(`results${{step}}`).textContent = "Simulation cancelled.";
+        }
+
+        function isValidPassword(password, characterSet) {
+            for (let char of password) {
+                if (!characterSet.includes(char)) {
+                    return false; // Found an invalid character
+                }
+            }
+            return true;
+        }
+
+        function generateAttempt(index, characters, length) {
+            let base = characters.length;
+            let attempt = "";
+            while (index > 0 || attempt.length < length) {
+                attempt = characters[index % base] + attempt;
+                index = Math.floor(index / base);
+            }
+            return attempt.padStart(length, characters[0]);
+        }
+
+        function togglePassword(inputId, iconElement) {
+            let passwordInput = document.getElementById(inputId);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                iconElement.textContent = "visibility_off"; // Change icon to "eye closed"
+            } else {
+                passwordInput.type = "password";
+                iconElement.textContent = "visibility"; // Change icon back to "eye open"
+            }
+        }
+
+        function checkStrength(password) {
+            const strengthBar = document.getElementById('strength-bar').firstElementChild;
+            const strengthIndicator = document.getElementById('strength-indicator');
+
+            let strength = 0;
+            if (password.length >= 12) strength++; // Length check
+            if (/[A-Z]/.test(password)) strength++; // Uppercase check
+            if (/[a-z]/.test(password)) strength++; // Lowercase check
+            if (/[0-9]/.test(password)) strength++; // Number check
+            if (/[^A-Za-z0-9]/.test(password)) strength++; // Special character check
+
+            // Update strength bar and text
+            switch (strength) {
+                case 0:
+                    strengthBar.style.width = '0%';
+                    strengthIndicator.textContent = 'Password Strength:';
+                    break;
+                case 1:
+                    strengthBar.style.width = '20%';
+                    strengthBar.style.backgroundColor = '#ff4d4d'; // Weak: Red
+                    strengthIndicator.textContent = 'Password Strength: Weak';
+                    break;
+                case 2:
+                    strengthBar.style.width = '40%';
+                    strengthBar.style.backgroundColor = '#ff9800'; // Medium: Orange
+                    strengthIndicator.textContent = 'Password Strength: Medium';
+                    break;
+                case 3:
+                    strengthBar.style.width = '60%';
+                    strengthBar.style.backgroundColor = '#ffc107'; // Good: Yellow
+                    strengthIndicator.textContent = 'Password Strength: Good';
+                    break;
+                case 4:
+                    strengthBar.style.width = '80%';
+                    strengthBar.style.backgroundColor = '#8bc34a'; // Strong: Light Green
+                    strengthIndicator.textContent = 'Password Strength: Strong';
+                    break;
+                case 5:
+                    strengthBar.style.width = '100%';
+                    strengthBar.style.backgroundColor = '#4caf50'; // Very Strong: Green
+                    strengthIndicator.textContent = 'Password Strength: Very Strong';
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
