@@ -3,5 +3,5 @@ The project utlizes HTML and CSS for the page content/visuals, and Javascript fo
 
 In order to view the project:
 1. Download the .zip file onto your system, and decompress it.
-2. Open the folder and find the "BruteForceSim.html" file.
+2. Open the folder and find the "BruteForceSim.html" file within the "BruteForceProgram" subdirectory.
 3. Right-click on the file, and open it with your preferred web browser.
