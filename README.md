@@ -1,2 +1,7 @@
 # Password Brute-Force Simulator
-The project file can be run by downloading it onto your system and openning it using any web browser installed on your machine. It uses a brute force mechanism built directly into the Javascript section (no imports), and tests user passwords at varying complexities and lengths in order to educate about the importance of password robustness in defending against brute-force attacks. Additionally, there is a built in password strength meter at the end so that users can understand to what degree a password is considered weak, strong, etc.
+The project utlizes HTML and CSS for the page content/visuals, and Javascript for the brute-force logic, password strength assessment, and other small functionalities. The brute-force operations will run on the local hardware it is installed on, therefore if you have an old/slow CPU, it may take longer to complete than normal.
+
+In order to view the project:
+1. Download the .zip file onto your system, and decompress it.
+2. Open the folder and find the "BruteForceSim.html" file.
+3. Right-click on the file, and open it with your preferred web browser.
