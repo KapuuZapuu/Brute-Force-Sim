@@ -1,5 +1,5 @@
 # Password Brute-Force Simulator
-The project utlizes HTML and CSS for the page content/visuals, and Javascript for the brute-force logic, password strength assessment, and other small functionalities. The brute-force operations will run on the local hardware it is installed on, therefore if you have an old/slow CPU, it may take longer to complete than normal.
+The project utlizes HTML and CSS for the page content/visuals, and Javascript for the brute-force logic, password strength assessment, and other small functionalities. The brute-force operations will run on the local hardware where the webpage is accessed, therefore if you have an older/slower CPU, it may take longer to complete than normal.
 
 In order to view the project:
 1. Download the .zip file onto your system, and decompress it.
